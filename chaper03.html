@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas 画布透明度</title>
+</head>
+<body>
+  <div id="chaper03">chaper03</div>
+  <canvas id="canvas"></canvas>
+  <script>
+  // 纯色图形的绘制，如果用到半透明或者不透明，建议使用RGBA或者HSLA色值进行控制，
+  // globalAlpha是画布的全局透明度，使用其设置透明度之后都是需要在进行还原设置的。
+
+  // 若绘制图片的话，借助 globalAlpha属性是更好的选择。例如：图片半透明处理
+  // 1）先绘制半透明图片，2）然后绘制不透明文字。代码如下：
+  const canvasAlpha = document.getElementById('canvas')
+  const contextAlpha = canvasAlpha.getContext('2d')
+  contextAlpha.save()  // 先存储当前的上下文状态
+  contextAlpha.globalAlpha = 0.5 // 设置图片半透明
+  const eleImage = document.createElement('img')
+  eleImage.onload = function () {
+    contextAlpha.drawImage(this, 0, 0)
+    contextAlpha.restore() // 恢复画布透明度
+    contextAlpha.font = '48px serif' // 绘制文字
+    contextAlpha.fillText('标题', 96, 90)
+  }
+  eleImage.src = './1.jpg'
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas 混合模式</title>
+  <style lang="css">
+  img { visibility: hidden; }
+  </style>
+</head>
+<body>
+  <div id="chaper03">chaper04</div>
+  <canvas id="hollowOut"></canvas>
+  <canvas id="screen"></canvas>
+  <img id="bright" src="./bright.jpg" width="300" height="200" alt="装饰图">
+  <script>
+  // globalCompositeOperation 可以用来设置Canvas图形的混合模式，
+  // 能衍生出很多其他效果。如：遮罩、剪裁，以及改变绘图的上下层叠关系
+
+  var eleImage = new Image();
+  eleImage.onload = function () {
+    example1.call(this);
+    example2.call(this);
+  };
+  eleImage.src = './1.jpg';
+  var createInterlace = function (size, color1, color2) {
+    var proto = document.createElement("canvas").getContext("2d");
+    proto.canvas.width = size * 2;
+    proto.canvas.height = size * 2;
+    proto.fillStyle = color1; // top-left
+    proto.fillRect(0, 0, size, size);
+    proto.fillStyle = color2; // top-right
+    proto.fillRect(size, 0, size, size);
+    proto.fillStyle = color2; // bottom-left
+    proto.fillRect(0, size, size, size);
+    proto.fillStyle = color1; // bottom-right
+    proto.fillRect(size, size, size, size);
+    var pattern = proto.createPattern(proto.canvas, "repeat");
+    pattern.data = proto.canvas.toDataURL();
+    return pattern;
+  };
+  var op_8x8 = createInterlace(8, "#FFF", "#EEE"); // 绘制透明背景块
+  // 案例1：文字镂空效果。一个图片，文字部分是透明的。借助destination-out实现。
+  var example1 = function () {
+    var canvasHollowOut = document.getElementById('hollowOut');
+    var contextHollowOut = canvasHollowOut.getContext('2d');
+    canvasHollowOut.style.background = 'url('+ op_8x8.data +')';
+    contextHollowOut.drawImage(this, 0, 0, 300, 200);
+    contextHollowOut.globalCompositeOperation = 'destination-out';
+    contextHollowOut.font = 'bold 120px SimHei, STHeiti';
+    contextHollowOut.fillText('镂空', 25, 120);
+  };
+  // 案例2：滤色效果。新图片给原图片增加装饰效果。借助 screen 实现。
+  var example2 = function () {
+    var canvasScreen = document.getElementById('screen')
+    var contextScreen = canvasScreen.getContext('2d')
+    contextScreen.drawImage(this, 0, 0, 300, 200)
+    contextScreen.globalCompositeOperation = 'screen'
+    var brightDom = document.getElementById('bright')
+    var imgScreen = new Image()
+    imgScreen.src = brightDom.src
+    contextScreen.drawImage(imgScreen, 0, 0, 300, 200)
+  }
+  </script>
+</body>
+</html>

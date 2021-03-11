@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas 字体</title>
+  <style>
+    div {
+      font:16px arial;
+    }
+  </style>
+</head>
+<body>
+  <div id="chaper02">chaper02</div>
+  <canvas id="canvas"></canvas>
+  <script>
+  const canvas = document.getElementById('canvas')
+  const context = canvas.getContext('2d')
+  context.font = '24px SimSun, Songti SC';
+  context.fillText('24px 的宋体呈现', 10, 20)
+  const divStyle = window.getComputedStyle(document.querySelector('div'))
+  console.log('divStyle', divStyle)
+  context.font = divStyle.fontSize + ' ' + divStyle.fontFamily;
+  context.fillText('来自css的计算值', 10, 40)
+  </script>
+</body>
+</html>

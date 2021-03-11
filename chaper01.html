@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas绘图环境</title>
+</head>
+<body>
+  <div id="chaper01">chaper01</div>
+  <canvas id="canvas"></canvas>
+  <script>
+  CanvasRenderingContext2D.prototype.fullCircle = function(style) {
+    const canvas = this.canvas
+    const minRadius = Math.min(canvas.width, canvas.height) / 2
+    // 纯色填充
+    this.fillStyle = style || '#000'
+    // 绘制arc
+    this.beginPath()
+    this.arc(canvas.width/2, canvas.height/2, minRadius, 2*Math.PI)
+    this.fill()
+  }
+
+  // 渐变色填充
+  const canvasLinear = document.getElementById('canvas')
+  const contextLinear = canvasLinear.getContext('2d')
+  const gradientLinear = contextLinear.createLinearGradient(0, 0, 0, 100)
+  gradientLinear.addColorStop(0, 'red')
+  gradientLinear.addColorStop(1, 'green')
+  contextLinear.fillStyle = gradientLinear
+  // 纹理填充
+  const canvasPattern = document.getElementById('canvas')
+  const contextPattern = canvasPattern.getContext('2d')
+  const imagePattern = document.createElement('img')
+  imagePattern.onload = function () {
+    const canvas = document.createElement('canvas')
+    canvas.width = canvas.height = 50
+    const context = canvas.getContext('2d')
+    context.drawImage(this, 0, 0, 50, 50)
+    const pattern = contextPattern.createPattern(canvas, 'repeat')
+    contextPattern.fillStyle = pattern
+  }
+  imagePattern.src = './pattern.jpg'
+  </script>
+</body>
+</html>
