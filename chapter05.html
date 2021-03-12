@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas lineCap</title>
+  <style>
+    .spining {
+      /* steps()是一个timing function，允许将动画或者过渡分割成段，而不是从一种状态持续到另一种状态的过渡。*/
+      animation: spin steps(8) infinite 1s;
+    }
+    @keyframes spin {
+      from {
+        transform: rotate(0);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="chapter05">chapter05</div>
+  <canvas id="canvas"></canvas>
+  <script>
+  // 默认值'butt'，线的端点就像个切断了一样
+  // round 线的端点多出了一个圆弧
+  // square 线的端点多出了一个方框，框框的宽度和线一样宽，高度是线厚度的一半
+
+  // 绘制一个 loading 效果
+  /** @type {HTMLCanvasElement} */   
+  const canvasLineCap = document.getElementById('canvas')
+  const contextLineCap = canvasLineCap.getContext('2d')
+  const centerX = canvasLineCap.width/2
+  const centerY = canvasLineCap.height/2
+  const center = [centerX, centerY]
+  const length = 8, offset = 8
+  contextLineCap.lineWidth = 4
+  contextLineCap.lineCap = 'round'
+  for (let angle = 0; angle < 360; angle += 45) {
+    let sin = Math.sin(angle / 180 * Math.PI)
+    let cos = Math.cos(angle / 180 * Math.PI)
+    contextLineCap.beginPath()
+    contextLineCap.moveTo(center[0] + cos * offset, center[1] + sin * offset)
+    contextLineCap.lineTo(center[0] + cos * (offset + length), center[1] + sin * (offset + length))
+    contextLineCap.strokeStyle = 'rgba(0, 0, 0, ' + (0.25 + 0.75 * angle / 360) + ')'
+    contextLineCap.stroke()
+  }
+  canvasLineCap.addEventListener('click', function() {
+    this.className = 'spining'
+  })
+  </script>
+</body>
+</html>

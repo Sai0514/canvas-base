@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas lineJoin</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="chapter07">chapter07</div>
+  <canvas id="canvas" width="240" height="120"></canvas>
+  <script>
+  // 绘制一个圆润的三角箭头。点击单选选项，切换箭头类型。
+  /** @type {HTMLCanvasElement} */   
+ 
+  const canvas = document.getElementById('canvas')
+  const context = canvas.getContext('2d')
+  const start = { x: 20, y: 20 }
+  const end = { x: 220, y: 100 }
+  // 计算两点距离，主要是为了计算斜率
+  const distanceX = end.x - start.x, 
+        distanceY = end.y - start.y
+  const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
+  // 箭头的尺寸
+  const distanceArrow = 7, sharpeArrow = 5
+  // 先确定轴线与三角两个尖角点交汇坐标
+  const arrowMoveTo = {
+    x: start.x + distanceArrow * distanceX / distance,
+    y: start.y + distanceArrow * distanceY / distance
+  }
+  const arrowLineTo = {
+    x: end.x - distanceArrow * distanceX / distance,
+    y: end.y - distanceArrow * distanceY / distance
+  }
+  // 4个对称点坐标
+  const arrowTo1 = {
+    x: arrowMoveTo.x - sharpeArrow * distanceY / distance,
+    y: arrowMoveTo.y + sharpeArrow * distanceX / distance
+  }
+  const arrowTo2 = {
+    x: arrowMoveTo.x + sharpeArrow * distanceY / distance,
+    y: arrowMoveTo.y - sharpeArrow * distanceX / distance
+  }
+  const arrowTo3 = {
+    x: arrowLineTo.x - sharpeArrow * distanceY / distance,
+    y: arrowLineTo.y + sharpeArrow * distanceX / distance
+  }
+  const arrowTo4 = {
+    x: arrowLineTo.x + sharpeArrow * distanceY / distance,
+    y: arrowLineTo.y - sharpeArrow * distanceX / distance
+  }
+  // 设置线的粗细和断点，转角样式
+  context.lineWidth = 2
+  context.lineCap = 'round'
+  context.lineJoin = 'round'
+  // 绘制方法
+  const draw = function (arrow) {
+    arrow = arrow || 'single'
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.beginPath()
+    // 三种箭头类型
+    switch (arrow) {
+      case 'single': {
+        context.moveTo(start.x, start.y)
+        context.lineTo(end.x, end.y)
+        // 两个结束对称点
+        context.lineTo(arrowTo3.x, arrowTo3.y)
+        context.lineTo(arrowTo4.x, arrowTo4.y)
+        // 回到结束点
+        context.lineTo(end.x, end.y)
+        break;
+      }
+      case 'both': {
+        context.moveTo(start.x, start.y)
+        // 两个起始对称点
+        context.lineTo(arrowTo1.x, arrowTo1.y)
+        context.lineTo(arrowTo2.x, arrowTo2.y)
+        // 回到起始点
+        context.lineTo(start.x, start.y)
+        // 到达结束点
+        context.lineTo(end.x, end.y)
+        // 两个结束对称点
+        context.lineTo(arrowTo3.x, arrowTo3.y)
+        context.lineTo(arrowTo4.x, arrowTo4.y)
+        context.lineTo(end.x, end.y)
+        break;
+      }
+      case 'part-both' : {
+        // 先绘制起止线
+        context.moveTo(start.x, start.y)
+        context.lineTo(end.x, end.y)
+        // 结束点的半个箭头
+        context.lineTo(arrowTo4.x, arrowTo4.y)
+        context.lineTo(arrowLineTo.x, arrowLineTo.y)
+        context.closePath()
+        // 开始点的半个箭头
+        context.moveTo(start.x, start.y)
+        context.lineTo(arrowTo1.x, arrowTo1.y)
+        context.lineTo(arrowMoveTo.x, arrowMoveTo.y)
+        break;
+      }
+    }
+    // 闭合、描边、填充
+    context.closePath()
+    context.stroke()
+    context.fill()
+  }
+
+  // 单箭头
+  // draw('single')
+  // 双箭头
+  // draw('both')
+  // 单侧向箭头
+  draw('part-both')
+  </script>
+</body>
+</html>

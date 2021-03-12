@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas lineDashOffset</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="chapter06">chapter06</div>
+  <canvas id="canvas" width="240" height="120"></canvas>
+  <script>
+  // 实现一个虚线边框不断旋转的效果
+  /** @type {HTMLCanvasElement} */   
+ 
+  const canvas = document.getElementById('canvas')
+  const context = canvas.getContext('2d')
+  var offset = 0
+  const draw = function () {
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.setLineDash([8, 4])
+    context.lineDashOffset = offset
+    // fillStyle, strokeStyle 默认黑色
+    context.strokeRect(2, 2, 236, 116)
+  }
+
+  const run = function () {
+    offset += 0.5
+    if (offset > 24) {
+      offset = 0
+    }
+    draw()
+    // 继续绘制
+    requestAnimationFrame(run)
+  } 
+  run()
+  </script>
+</body>
+</html>
