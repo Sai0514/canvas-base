@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>arc()  arcTo()</title>
+</head>
+<body>
+  <div id="chapter11">chapter11</div>
+  <div>arc()</div>
+  <canvas id="canvasArc" width="240" height="240"></canvas>
+  <div>arcTo()</div>
+  <canvas id="canvasArcTo" width="240" height="240"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      context.arc(x, y, radius, startAngle, endAngle[, anticlockwise])
+      @endAngle Number型 起始弧度为0、结束弧度为Math.PI*2则为正圆
+      @anticlockwise Boolean型 按照顺时针（默认是false）还是逆时针（true）。
+    */
+    const canvasArc = document.getElementById('canvasArc')
+    const contextArc = canvasArc.getContext('2d')
+    // 1/4 弧度
+    contextArc.beginPath()
+    contextArc.arc(120, 60, 50, 0, Math.PI/2)
+    contextArc.stroke()
+    // 1/4 弧度 逆时针
+    contextArc.beginPath()
+    contextArc.arc(120, 180, 50, 0, Math.PI/2, true)
+    contextArc.stroke()
+  })();
+  
+  (function(){
+    /** @type {HTMLCanvasElement} */
+
+  })();
+  </script>
+</body>
+</html>
