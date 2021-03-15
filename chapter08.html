@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas shadow</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="chapter08">chapter08</div>
+  <canvas id="canvas" width="480" height="120"></canvas>
+  <script>
+  /** @type {HTMLCanvasElement} */   
+ 
+  const canvas = document.getElementById('canvas')
+  const context = canvas.getContext('2d')
+  // 1. 矩形块的阴影模糊
+  context.shadowColor = 'red' // 默认值为rgba(0,0,0,0)
+  context.shadowBlur = 10 // 默认值是0
+  context.fillStyle = '#f0f3f9'
+  context.fillRect(40, 40, 160, 40)
+  // 2. 文字的阴影模糊
+  context.shadowColor = 'rgba(50, 50, 50, 1)'
+  context.shadowBlur = 3 // 高斯模糊的参数
+  context.shadowOffsetX = 3 // 水平偏移值
+  context.shadowOffsetY = 3 // 垂直偏移值
+  context.fillStyle = '#f00'
+  context.font = '60px STheiti, simHei'
+  context.fillText('模糊', 240, 80)
+  </script>
+</body>
+</html>

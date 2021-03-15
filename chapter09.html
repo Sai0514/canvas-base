@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas stroke</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="chapter09">chapter09</div>
+  <canvas id="canvas" width="600" height="120"></canvas>
+  <script>
+  /*
+    strokeStyle 可以是路径的描边、形状的描边、文字的描边
+    strokeStyle 描边的样式可以是纯颜色、渐变色、图案纹理
+  */
+  /** @type {HTMLCanvasElement} */   
+ 
+  const canvas = document.getElementById('canvas')
+  const context = canvas.getContext('2d')
+  // 描边设置为纯颜色。
+  context.strokeStyle = 'red'
+  context.lineWidth = 4
+  context.strokeRect(40, 40, 120, 40)
+  // 描边设置为渐变色
+  const gradient = context.createLinearGradient(0, 0, 0, 120) // 竖直方向渐变
+  gradient.addColorStop(0, 'red')
+  gradient.addColorStop(1, 'green')
+  context.strokeStyle = gradient
+  context.lineWidth = 10
+  context.strokeRect(220, 40, 120, 40)
+  // 描边设置为图案
+  const image = new Image()
+  image.onload = function () {
+    const pattern = context.createPattern(this, 'repeat')
+    context.strokeStyle = pattern
+    context.lineWidth = 6
+    context.strokeRect(400, 40, 120, 40)
+  }
+  image.src = './1.jpg'
+  </script>
+</body>
+</html>

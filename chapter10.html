@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas textAlign/Baseline</title>
+  <style>
+    #canvasAlign {
+      outline: 1px dotted;
+    }
+    .center-line{position: absolute; margin-left: 120px; height: 120px; border-left: 2px solid #09f;}
+  </style>
+</head>
+<body>
+  <div id="chapter10">chapter10</div>
+  <div>textAlign</div>
+  <p id="radios">
+    <input type="radio" name="textAlign" value="left" checked><label for="alignLeft">left</label>
+    <input type="radio" name="textAlign" value="right"><label for="alignRight">right</label>
+    <input type="radio" name="textAlign" value="center"></label><label for="alignCenter">center</label>
+    <input type="radio" name="textAlign" value="start"><label for="alignStart">start</label>
+    <input type="radio" name="textAlign" value="end"><label for="alignEnd">end</label>
+  </p>
+  <p>
+    <i class="center-line"></i><canvas id="canvasAlign" width="240" height="120"></canvas>
+  </p>
+  
+  <div>textBaseline</div>
+  <canvas id="canvasBaseline" width="240" height="500"></canvas>
+  <script>
+  /*
+    textAlign: 文本绘制的时候，文本的水平对齐方式。支持如下关键字：
+    left：文本左对齐。文本内容最左侧位置就是设置的x坐标值
+    right：文本右对齐。文本内容最右侧位置就是设置的x坐标值
+    center：文本居中对齐。文本内容水平中心位置就是设定的x坐标值
+    start：文本起始方位对齐。如果文本是从左往右排列的，则表示左对齐；如果文本是从右往左排列的，则表示右对齐。
+    end：文本结束位置对齐。如果文本是从左往右排列的，则表示右对齐；如果文本是从右往往左排列的，则表示左对齐。
+  */
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    const canvasAlign = document.getElementById('canvasAlign')
+    const contextAlign = canvasAlign.getContext('2d')
+    
+    const drawAlign = (align) => {
+      contextAlign.clearRect(0, 0, 240, 120)
+      contextAlign.font = '48px STHeiti, SimHei'
+      contextAlign.textAlign = align || 'left'
+      // contextAlign.direction = 'rtl'
+      contextAlign.fillText('对齐', 120, 80)
+    }
+    drawAlign()
+    var radios = document.querySelectorAll('input[name="textAlign"]')
+    Array.from(radios).forEach(radio => {
+      radio.addEventListener('click', function () {
+        drawAlign(this.value)
+      })
+    });
+  })();
+
+  /*
+    textBaseline: 文本绘制的时候，文本对齐的基线。支持如下关键字：
+    top：设定的垂直y坐标作为文本em区域的顶部。（em区域可以看成是中文字符占据的区域）
+    hanging：主要用于藏文和其他印度文字中使用。
+    middle：设定的垂直y坐标作为文本em区域的中心位置。em区域可以看成是中文字符占据的区域）
+    alphabetic：默认值。正常文本的基线，可以看成是字母的下边缘。
+    ideographic：主要在汉语、日语和韩语中使用。含义为：如果字符的主体突出在字母基线之下，则这是字符主体的底部。
+    bottom：设定的垂直y坐标作为文本em区域的底部。（em区域可以看成是中文字符占据的区域）
+  */
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    const canvasBaseline = document.getElementById('canvasBaseline')
+    const contextBaseline = canvasBaseline.getContext('2d')
+
+    const baselines = ['top', 'hanging', 'middle', 'alphabetic', 'ideographic', 'bottom']
+    contextBaseline.font = '30px STHeiti, SimHei'
+    contextBaseline.strokeStyle = 'red'
+    baselines.forEach((baseline, index) => {
+      contextBaseline.textBaseline = baseline
+      var y = 75 + index * 75
+      // 绘制参考线
+      contextBaseline.beginPath()
+      contextBaseline.moveTo(0, y + 0.5)
+      contextBaseline.lineTo(200, y + 0.5)
+      contextBaseline.stroke();
+      contextBaseline.fillText('AaXx一中-' + baseline, 0, y)
+    })
+  })()
+  </script>
+</body>
+</html>
