@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>arcTo()</title>
+  <style>
+    canvas[id]{outline: 1px dotted;}
+    .control-1,.control-2,.control-3{position: absolute; width: 10px; height: 10px; -ms-transform: translate(-5px, -5px); transform: translate(-5px, -5px);}
+    /*left, top就是控制点坐标*/
+    .control-1{
+      left: 150px; top: 160px;
+      background-color:red;
+    }
+    .control-2 {
+      left: 210px; top: 100px;
+      background-color:green;
+    }
+    .control-3 {
+      left: 60px; top: 120px;
+      background-color:gray;
+    }
+    span.control-1,span.control-2,span.control-3{position: static; display: inline-block; vertical-align: -5px;}
+    [data-coord]:active::after{content:attr(data-coord); position: absolute; font-size:12px; opacity: 0.5; color:#4c5161; left: 50%; bottom: 100%; transform: translate(-50%, 0) scale(0.8333); white-space: nowrap;}
+  </style>
+</head>
+<body>
+  <div id="chapter12">chapter12</div>
+  <div>arcTo()</div>
+  <p class="rel">
+    <a href="javascript:" id="control1" class="control-1" draggable="false" data-coord="150,100"></a>
+    <a href="javascript:" id="control2" class="control-2" draggable="false" data-coord="200,40"></a>
+    <i class="control-3"></i>
+    <canvas id="canvasArcTo"></canvas>
+  </p>
+  <script> 
+  (function(){
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.arcTo(x1, y1, x2, y2, radius)
+      @ x1:第一个控制点的横坐标
+      @ y1 第一个控制点的纵坐标
+      @ x2 第二个控制点的横坐标
+      @ y2 第二个控制点的纵坐标
+      @ radius 圆弧的半径大小
+    */
+    const canvas = document.getElementById('canvasArcTo')
+    const context = canvas.getContext('2d')
+    const draw = (x1, y1, x2, y2) => {
+      context.clearRect(0, 0, 300, 150)
+      context.beginPath()
+      context.moveTo(50, 50)
+      context.arcTo(x1, y1, x2, y2, 40)
+      context.lineTo(x2, y2)
+      context.stroke()
+    }
+
+    draw(150, 100, 200, 40)
+
+    const control1 = document.getElementById('control1')
+    const control2 = document.getElementById('control2')
+    const controls = new Array()
+    controls.push(control1)
+    controls.push(control2)
+    const store = {}
+    controls.forEach(control => {
+      control.addEventListener('mousedown', function(event) {
+        store.target = this
+        const coord = this.getAttribute('data-coord')
+        if (!coord) {
+          console.error('坐标缺失')
+          return
+        }
+        store.coord = coord.split(',')
+        store.pageX = event.pageX
+        store.pageY = event.pageY
+        store.moving = true
+      })
+    });
+
+    document.addEventListener('mousemove', function (event) {
+		if (store.moving == true) {
+			event.preventDefault();
+			// 此时移动距离
+			var moveX = event.pageX - store.pageX;
+			var moveY = event.pageY - store.pageY;
+
+			// 可以知道此时控制点的位置了
+			var currentX = +store.coord[0] + moveX;
+			var currentY = +store.coord[1] + moveY;
+			// 范围限制
+			if (currentX < 0) {
+				currentX = 0;
+			} else if (currentX > 300) {
+				currentX = 300;
+			}
+			if (currentY < 0) {
+				currentY = 0;
+			} else if (currentY > 150) {
+				currentY = 150;
+			}
+			// 设置位置
+			store.target.style.left = currentX + 'px';
+			store.target.style.top = currentY + 'px';
+			// 改变坐标
+			store.target.setAttribute('data-coord', [currentX, currentY].join());
+
+			// 实时绘制
+			var coordAll = '', arrCoord = [];
+			controls.forEach(function (control) {
+				var coord = control.getAttribute('data-coord');
+				if (coordAll) {
+					coordAll = coordAll + ',' + coord;
+				} else {
+					coordAll = coord;
+				}
+			});
+			arrCoord = coordAll.split(',');
+			draw.apply(null, arrCoord);
+
+			// 代码展示的坐标同步
+			['x1', 'y1', 'x2', 'y2'].forEach(function (cl, index) {
+				var value = arrCoord[index];
+				[].slice.call(document.getElementsByClassName(cl)).forEach(function (ele) {
+					ele.innerHTML = value;
+				});
+			});
+		}
+	});
+
+	document.addEventListener('mouseup', function () {
+		if (store.moving == true) {
+			store.moving = false;
+		}
+	});
+})();
+  </script>
+</body>
+</html>

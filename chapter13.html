@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>bezierCurveTo()</title>
+</head>
+<body>
+  <div id="chapter13">chapter13</div>
+  <div>bezierCurveTo()</div>
+  <canvas id="canvasbezierCurveTo" width="240" height="240"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
+      @ cp1x: 第一个控制点的横坐标
+      @ cp1y：第一个控制点的纵坐标
+      @ cp2x：第二个控制点的横坐标
+      @ cp2y：第二个控制点的纵坐标
+      @ x：结束点的横坐标
+      @ y：结束点的纵坐标
+    */
+    const canvasbezierCurveTo = document.getElementById('canvasbezierCurveTo')
+    const contextbezierCurveTo = canvasbezierCurveTo.getContext('2d')
+    contextbezierCurveTo.beginPath()
+    contextbezierCurveTo.strokeStyle = 'red'
+    contextbezierCurveTo.bezierCurveTo(24, 134, 199, 17, 252, 98)
+    contextbezierCurveTo.stroke()
+  })();
+  </script>
+</body>
+</html>

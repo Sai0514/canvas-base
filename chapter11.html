@@ -3,14 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>arc()  arcTo()</title>
+  <title>arc()</title>
 </head>
 <body>
   <div id="chapter11">chapter11</div>
   <div>arc()</div>
   <canvas id="canvasArc" width="240" height="240"></canvas>
-  <div>arcTo()</div>
-  <canvas id="canvasArcTo" width="240" height="240"></canvas>
   <script>
   (function(){
     /** @type {HTMLCanvasElement} */
@@ -30,11 +28,6 @@
     contextArc.beginPath()
     contextArc.arc(120, 180, 50, 0, Math.PI/2, true)
     contextArc.stroke()
-  })();
-  
-  (function(){
-    /** @type {HTMLCanvasElement} */
-
   })();
   </script>
 </body>

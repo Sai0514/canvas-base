@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>createImageData()</title>
+</head>
+<body>
+  <div id="chapter15">chapter15</div>
+  <div>createImageData()</div>
+  <canvas id="canvascreateImageData" width="300" height="150"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      创建空的ImageData对象，该对象中所以像素信息都是透明黑
+      imagedata.data，是一个包含RGBA像素信息的Uint8ClampedArray，
+      imagedata.data的范围[0, 255]，一个像素点占据ImageData.data返回数组4个值
+      从前往后依次表示R，G，B，A这四个值，也就是红色值，绿色值，蓝色值以及透明度值。
+      前三个色值表示范围和CSS3中的RGBA颜色一样，但是透明度A却不一样，在这里A的范围也是0~255
+      context.createImageData(width, height); 
+      context.createImageData(imagedata);
+      @ path：
+    */
+    const canvascreateImageData = document.getElementById('canvascreateImageData')
+    const contextcreateImageData = canvascreateImageData.getContext('2d')
+    
+    const imagedata = contextcreateImageData.createImageData(300, 150)
+    for (var x = 1; x <= 300; x+=5) {
+      for (var y = 1; y <= 150; y+= 5) {
+        var index = 4 * ((y - 1) * 300 + (x - 1));
+        // RGBA颜色，在这里A的范围也是0~255
+        imagedata.data[index] = 128;
+        imagedata.data[index + 1] = 128;
+        imagedata.data[index + 2] = 128;
+        imagedata.data[index + 3] = 256;
+      }
+    }
+    // 重绘
+    contextcreateImageData.putImageData(imagedata, 0, 0)
+  })();
+  </script>
+</body>
+</html>

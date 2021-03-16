@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>clip()</title>
+</head>
+<body>
+  <div id="chapter14">chapter14</div>
+  <div>clip()</div>
+  <canvas id="canvasClip" width="240" height="240"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      context.clip();context.clip(fillRule);context.clip(path, fillRule);
+      @ fillRule：第一个控制点的横坐标
+      @ path：
+    */
+    const canvasClip = document.getElementById('canvasClip')
+    const contextClip = canvasClip.getContext('2d')
+    const img = new Image()
+    img.onload = function(){
+      contextClip.beginPath()
+      contextClip.moveTo(20, 20)
+      contextClip.lineTo(200, 80)
+      contextClip.lineTo(110, 150)
+      contextClip.clip() // 剪裁
+      contextClip.drawImage(this, 0, 0, 240, 240)
+    }
+    img.src = './1.jpg'
+  })();
+  </script>
+</body>
+</html>
