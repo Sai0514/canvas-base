@@ -31,10 +31,10 @@
       for (var y = 1; y <= 150; y+= 5) {
         var index = 4 * ((y - 1) * 300 + (x - 1));
         // RGBA颜色，在这里A的范围也是0~255
-        imagedata.data[index] = 128;
+        imagedata.data[index] = 0;
         imagedata.data[index + 1] = 128;
-        imagedata.data[index + 2] = 128;
-        imagedata.data[index + 3] = 256;
+        imagedata.data[index + 2] = 0;
+        imagedata.data[index + 3] = 255;
       }
     }
     // 重绘

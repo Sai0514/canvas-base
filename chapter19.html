@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>drawFocusIfNeeded()</title>
+</head>
+<body>
+  <div id="chapter19">chapter19</div>
+  <div>drawFocusIfNeeded()</div>
+  <canvas id="canvas" width="240" height="120">
+    <button id="button1">按钮1</button>
+    <button id="button2">按钮2</button>
+  </canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.drawFocusIfNeeded(element);
+      context.drawFocusIfNeeded(path, element);
+      @ element：用于检测当前是否处于focus状态的元素
+      @ path：指Path2D对象
+    */
+    const button1 = document.getElementById('button1')
+    const button2 = document.getElementById('button2')
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    const draw = function () {
+      context.clearRect(0, 0, 240, 120)
+      context.font = '16px STHeiti, SimHei';
+      context.textAlign = 'center'
+      context.textBaseline = 'middle'
+      // 绘制按钮1
+      context.beginPath()
+      context.arc(60, 60, 50, 0, Math.PI * 2)
+      context.fillStyle = 'red'
+      context.fill()
+      context.fillStyle = 'white'
+      context.fillText('按钮1', 60, 60)
+      context.drawFocusIfNeeded(button1)
+      // 绘制按钮2
+      context.beginPath()
+      context.arc(180, 60, 50, 0, Math.PI * 2)
+      context.fillStyle = 'green'
+      context.fill()
+      context.fillStyle = 'white'
+      context.fillText('按钮2', 180, 60)
+      context.drawFocusIfNeeded(button2)
+    }
+    draw()
+
+    // 点击canvas元素
+    canvas.addEventListener('click', function(event){
+      // 通过点击位置判断点击的是哪个圈圈
+      var x = event.clientX - canvas.getBoundingClientRect().left
+      var y = event.clientY - canvas.getBoundingClientRect().top
+      // 距离两个圈圈圆心的距离
+      var distance1 = Math.sqrt((60-x)*(60-x) + (60-y)*(60-y))
+      var distance2 = Math.sqrt((180-x)*(180-x) + (60-y)*(60-y))
+      // 根据距离和半径大小判断是否在园内
+      if (distance1 <= 50) {
+        button1.focus()
+        draw()
+      } else if (distance2 < 50) {
+        button2.focus()
+        draw()
+      }
+    })
+  })();
+  </script>
+</body>
+</html>

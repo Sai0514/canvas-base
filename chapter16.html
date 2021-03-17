@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>createLinearGradient()</title>
+</head>
+<body>
+  <div id="chapter16">chapter16</div>
+  <div>createLinearGradient()</div>
+  <canvas id="canvascreateLinearGradient" width="300" height="150"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      context.createLinearGradient(x0, y0, x1, y1);返回的是CanvasGradient对象。
+      @ x0：渐变起始点的横坐标
+      @ y0：渐变起始点的纵坐标
+      @ x1：渐变结束点的横坐标
+      @ y1：渐变结束点的纵坐标
+    */
+    const canvascreateLinearGradient = document.getElementById('canvascreateLinearGradient')
+    const contextcreateLinearGradient = canvascreateLinearGradient.getContext('2d')
+    
+    const linearGradient = contextcreateLinearGradient.createLinearGradient(0, 0, 300, 150)
+    linearGradient.addColorStop(0, 'red')
+    linearGradient.addColorStop(1, 'green')
+    // 渐变坐标是全局的，而不是相对于填充元素计算的。
+    contextcreateLinearGradient.fillStyle = linearGradient
+    contextcreateLinearGradient.fillRect(10, 10, 160, 60)
+    contextcreateLinearGradient.fillRect(120, 80, 160, 60)
+  })();
+  </script>
+</body>
+</html>

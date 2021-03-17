@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>createPattern()</title>
+</head>
+<body>
+  <div id="chapter17">chapter17</div>
+  <div>createPattern()</div>
+  <canvas id="canvascreatePattern" width="300" height="150"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      context.createPattern(image, repetition);返回的是CanvasPattern对象。
+      @ image：用来平铺的CanvasImageSource图像。可以是下面的类型：
+      HTMLImageElement, 也就是<img>元素; HTMLVideoElement, 也就是<video>元素;
+      HTMLCanvasElement, CanvasRenderingContext2D, ImageBitmap, ImageData, Blob
+      @ repetition：图案的平铺方式。可以是下面的值：
+      repeat，repeat-x， repeat-y，no-repeat。当repetition为''或null时，按repeat方式渲染
+    */
+    const canvascreatePattern = document.getElementById('canvascreatePattern')
+    const contextcanvascreatePattern = canvascreatePattern.getContext('2d')
+    
+    const img = new Image()
+    img.onload = function () {
+      const canvas = document.createElement('canvas')
+      canvas.width = 50;
+      canvas.height = 40;
+      const context = canvas.getContext('2d')
+      context.drawImage(this, 0, 0, 50, 40)
+      const pattern = contextcanvascreatePattern.createPattern(canvas, null)
+      contextcanvascreatePattern.fillStyle = pattern
+      contextcanvascreatePattern.fillRect(0, 0, 250, 167)
+    }
+    img.src = './1.jpg'
+  })();
+  </script>
+</body>
+</html>
