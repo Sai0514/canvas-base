@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fillText()</title>
+</head>
+
+<body>
+  <div id="chapter21">chapter21</div>
+  <div>fillText()</div>
+  <canvas id="canvas" width="300" height="600"></canvas>
+  <script>
+    (function () {
+      /** @type {HTMLCanvasElement} */
+      CanvasRenderingContext2D.prototype.wrapText = function (text, x, y, maxWidth, lineHeight) {
+        if (typeof text != 'string' || typeof x != 'number' || typeof y != 'number') {
+          return;
+        }
+
+        var context = this;
+        var canvas = context.canvas;
+
+        if (typeof maxWidth == 'undefined') {
+          maxWidth = (canvas && canvas.width) || 300;
+        }
+        if (typeof lineHeight == 'undefined') {
+          lineHeight = (canvas && parseInt(window.getComputedStyle(canvas).lineHeight)) || parseInt(window
+            .getComputedStyle(document.body).lineHeight);
+        }
+
+        // 字符分隔为数组
+        var arrText = text.split('');
+        var line = '';
+
+        for (var n = 0; n < arrText.length; n++) {
+          var testLine = line + arrText[n];
+          var metrics = context.measureText(testLine);
+          var testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+            context.fillText(line, x, y);
+            line = arrText[n];
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        context.fillText(line, x, y);
+      };
+
+      /*
+        context.fillText(text, x, y [, maxWidth]);
+        @text: 用来填充的文本信息
+        @x：填充文本的起点横坐标
+        @y：填充文本的起点纵坐标
+        @maxWidth（可选）：填充文本占据的最大宽度，当文本占据宽度超过最大宽度，会压缩每个文本宽度进行适合。
+      */
+      const canvas = document.getElementById('canvas')
+      const context = canvas.getContext('2d')
+      // 1. 基本的文本绘制
+      context.font = '24px STheiti, SimHei'
+      context.fillText('Canvas API中文网', 24, 60)
+      // 2. maxWidth与文本缩放
+      context.fillText('Canvas API中文网，不只是文档', 24, 90)
+      context.fillText('Canvas API中文网，不只是文档', 24, 120, 200)
+      // 3. 文本自动换行
+    })();
+  </script>
+</body>
+
+</html>

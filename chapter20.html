@@ -8,6 +8,7 @@
 <body>
   <div id="chapter20">chapter20</div>
   <div>drawImage()</div>
+  <canvas id="canvas"></canvas>
   <script>
   (function(){
     /** @type {HTMLCanvasElement} */
@@ -17,7 +18,40 @@
      1.context.drawImage(image, dx, dy);
      2.context.drawImage(image, dx, dy, dWidth, dHeight);
      3.context.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+     @image：绘制在canvas上的元素，可以是各类Canvas图片资源，如<img>图片、SVG图像、Canvas元素本身等
+     @dx：在canvas画布上规划一片区域用来放置图片，dx就是这片区域的左上角横坐标
+     @dy：在canvas画布上规划一片区域用来放置图片，dy就是这片区域的左上角纵坐标
+     @dWidth：在canvas画布上规划一片区域用来放置图片，dWidth就是这片区域的宽度
+     @dHeight：在canvas画布上规划一片区域用来放置图片，dHeight是这片区域的高度
+     @sx：表示图片元素绘制在canvas画布上的起始横坐标
+     @sy：表示图片元素绘制在canvas画布上的起始纵坐标
+     @sWidth：表示图片元素从坐标点开始计算，绘制在画布上的图片宽度
+     @dWidth：表示图片元素从坐标点开始计算，绘制在画布上的图片高度
+     说明：
+     sx，sy，sWidth和sHeight，可以理解为对原始图片的提前剪裁。需注意：该可选参数在前面！！！
+     当图片的原始尺寸和canvas画布尺寸一样的时候，可以直接用image，dx，dy三个参数。
     */
+
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    const img = new Image()
+    img.onload = function () {
+      // 1. 保持原始图片尺寸和比例：
+      // context.drawImage(this, 0, 0)
+      // 2. 拉伸图片到指定大小和位置
+      // context.drawImage(this, 0, 0, 300, 150)
+      // 3. 拉伸图片同时保持图片比例
+      context.drawImage(this, 0, 42, 500, 250, 0, 0, 300, 150)
+      /*
+        分析 --- 剪裁坐标(0, 42, 500, 250)这4个值是怎么来的？
+        因为最终图片要显示在300*150大小的画布上，画布比例2:1。
+        因此，最终设置的用来绘制图片尺寸的比例也是2:1
+        原始图片宽度是500，要保持2:1，则高度也要设置为2:1
+        原始高度为333，希望显示图片中心区域，则起始垂直坐标计算(333-250)/2，四舍五入为42
+        因此，原始图片的剪裁坐标和尺寸值为0,42,500,250
+      */
+    }
+    img.src = './1.jpg' // 图片尺寸 500*333
   })();
   </script>
 </body>
