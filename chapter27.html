@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rotate() scale()</title>
+</head>
+<body>
+  <div id="chapter27">chapter27</div>
+  <div>rotate()</div>
+  <canvas id="canvasrotate1" width="300" height="200"></canvas>
+  <canvas id="canvasrotate2" width="200" height="300"></canvas>
+  <div>scale()</div>
+  <canvas id="canvasscale"></canvas>
+  <script>
+  (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.rotate(angle); 给canvas画布添加旋转矩阵，顺时针方向，单位弧度。
+      @angle：canvas画布旋转的角度，此旋转和css3的旋转变换不一样，旋转的是坐标系。
+      因此，实际开发过程中，旋转完毕，需要将坐标系再还原。
+      说明：
+      默认旋转中心是左上角坐标(0,0)，如果希望改变旋转中心点，需要先使用translate()进行平移。
+      角度转弧计算公式：radian = degree * Math.PI / 180。例如：degree是45度。
+    */
+    
+    const canvasrotate1 = document.getElementById('canvasrotate1')
+    const contextrotate1 = canvasrotate1.getContext('2d')
+    
+    // 1. 基本旋转
+    contextrotate1.rotate(45 * Math.PI / 180)
+    contextrotate1.font = '20px STHeiti, SimHei'
+    contextrotate1.fillText('旋转 旋转 旋转', 60, -40, 188)
+    contextrotate1.setTransform(1,0,0,1,0,0) // 重置当前的变换矩阵为初始态
+    contextrotate1.fillText('正常 正常 正常', 60, 144, 188)
+    // 2. 画布和图片同时旋转
+    const canvasrotate2 = document.getElementById('canvasrotate2')
+    const contextrotate2 = canvasrotate2.getContext('2d')
+    const width = canvasrotate2.width
+    const height = canvasrotate2.height
+    const image = new Image()
+    image.onload = function() {
+      // 对坐标系进行位移和旋转变换！
+      contextrotate2.translate(width/2, height/2)
+      contextrotate2.rotate(90 * Math.PI / 180)
+      contextrotate2.translate(-height/2, -width/2)
+      contextrotate2.drawImage(this, 0, 0, height, width)
+      contextrotate2.setTransform(1,0,0,1,0,0)
+    }
+    image.src = './1.jpg'
+  })();
+  </script>
+</body>
+</html>

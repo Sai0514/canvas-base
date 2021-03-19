@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transform() translate()</title>
+</head>
+<body>
+  <div id="chapter28">chapter28</div>
+  <canvas id="canvas"></canvas>
+  <script>
+  (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.save(); 保存当前canvas画布状态，并保持在堆栈的最上面。
+      context.restore(); 依次从堆栈的上方弹出存储的canvas画布状态。
+      
+    */
+    // 案例：点击“保存”按钮，不断递增改变Canvas上下文的font属性值，执行save()方法存储当前Canvas状态；点击“恢复”按钮执行restore()进行恢复。
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    
+    // 初始状态
+    var fontSize = 16
+    context.font = fontSize + 'px arial'
+    context.fillText('字号大小：' + fontSize, 10, 80)
+
+    // 按钮事件
+    const save = document.getElementById('save')
+    save.addEventListener('click', function() {
+      context.clearRect(0, 0, 300, 150)
+      // 字号递增
+      fontSize++
+      context.font = fontSize + 'px arial'
+      context.fillText('字号大小：' + fontSize, 10, 80)
+    })
+    const restore = document.getElementById('restore')
+    restore.addEventListener('click', function() {
+      context.clearRect(0, 0, 300, 150)
+      // 字号递减
+      fontSize--
+      context.font = fontSize + 'px arial'
+      context.fillText('字号大小： ' + fontSize, 10, 80)
+    })
+  })();
+  </script>
+</body>
+</html>

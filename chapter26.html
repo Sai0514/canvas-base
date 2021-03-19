@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>save() restore()</title>
+</head>
+<body>
+  <div id="chapter26">chapter26</div>
+  <input id="save" type="submit" value="保存">
+  <input id="restore" type="reset" value="恢复">
+  <canvas id="canvas"></canvas>
+  <script>
+  (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.save(); 保存当前canvas画布状态，并保持在堆栈的最上面。
+      context.restore(); 依次从堆栈的上方弹出存储的canvas画布状态。
+      绘图效果本身不保存，保存的只是绘图状态。包括：
+      1. 当前矩阵变换. transform()、rotate()、translate()、scale() 等
+      2. 当前剪裁区域。 clip()
+      3. 当前虚线位置。 setLineDash()
+      4. 以下属性值等： strokeStyle、fillStyle、globalAlpha、lineWidth、lineCap、lineJoin 
+      lineDashOffset、shadowOffsetX、shadowOffsetY、shadowBlur、shadowColor、miterLimit
+      globalCompositeOperation、font、textLine、textBaseLine
+    */
+    // 案例：点击“保存”按钮，不断递增改变Canvas上下文的font属性值，执行save()方法存储当前Canvas状态；点击“恢复”按钮执行restore()进行恢复。
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    
+    // 初始状态
+    var fontSize = 16
+    context.font = fontSize + 'px arial'
+    context.fillText('字号大小：' + fontSize, 10, 80)
+
+    // 按钮事件
+    const save = document.getElementById('save')
+    save.addEventListener('click', function() {
+      context.clearRect(0, 0, 300, 150)
+      // 字号递增
+      fontSize++
+      context.font = fontSize + 'px arial'
+      context.fillText('字号大小：' + fontSize, 10, 80)
+    })
+    const restore = document.getElementById('restore')
+    restore.addEventListener('click', function() {
+      context.clearRect(0, 0, 300, 150)
+      // 字号递减
+      fontSize--
+      context.font = fontSize + 'px arial'
+      context.fillText('字号大小： ' + fontSize, 10, 80)
+    })
+  })();
+  </script>
+</body>
+</html>
