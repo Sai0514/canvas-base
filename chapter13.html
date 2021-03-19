@@ -3,18 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>bezierCurveTo()</title>
+  <title>bezierCurveTo() quadraticCurveTo()</title>
 </head>
 <body>
   <div id="chapter13">chapter13</div>
   <div>bezierCurveTo()</div>
-  <canvas id="canvasbezierCurveTo" width="240" height="240"></canvas>
+  <canvas id="canvasbezierCurveTo" width="300" height="240"></canvas>
+  <div>quadraticCurveTo()</div>
+  <canvas id="canvasquadraticCurveTo" width="300" height="240"></canvas>
   <script>
   (function(){
     /** @type {HTMLCanvasElement} */
     
     /*
       context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
+      用来绘制贝塞尔曲线，需要3个控制点，前2个点是控制点，第3个点是结束点。
+      起始点是当前路径的最后一个控制点，如果之前无路径，可以用moveTo()作起始点
       @ cp1x: 第一个控制点的横坐标
       @ cp1y：第一个控制点的纵坐标
       @ cp2x：第二个控制点的横坐标
@@ -25,9 +29,48 @@
     const canvasbezierCurveTo = document.getElementById('canvasbezierCurveTo')
     const contextbezierCurveTo = canvasbezierCurveTo.getContext('2d')
     contextbezierCurveTo.beginPath()
-    contextbezierCurveTo.strokeStyle = 'red'
+    contextbezierCurveTo.moveTo(50, 50);
     contextbezierCurveTo.bezierCurveTo(24, 134, 199, 17, 252, 98)
     contextbezierCurveTo.stroke()
+    // 显示控制点
+    const arrPoints = [{x: 50,y:50}, {x: 24, y: 134}, { x: 199, y:17 }, {x: 252 , y: 98}]
+    const colors = ['gray', 'red', 'red', 'green'] // 灰色表示起始点，绿色表示结束点。红色为两个控制点！
+    arrPoints.forEach((point, index) => {
+      contextbezierCurveTo.beginPath()
+      contextbezierCurveTo.fillStyle = colors[index]
+      contextbezierCurveTo.rect(point.x, point.y, 6, 6)
+      contextbezierCurveTo.fill()
+    })
+  })();
+
+  (function(){
+    /** @type {HTMLCanvasElement} */
+    
+    /*
+      context.quadraticCurveTo(cpx, cpy, x, y)
+      用来绘制二次贝塞尔曲线，需要2个点，第一个点是控制点，第二个点是终点。
+      起始点是当前路径的最后一个点，创建之前使用moveTo()可以对起始点进行更改。
+      备注：相比于贝塞尔曲线方法，少了一个控制点。
+      @ cpx: 控制点的横坐标
+      @ cpy：控制点的纵坐标
+      @ x：结束点的横坐标
+      @ y：结束点的纵坐标
+    */
+    const canvasquadraticCurveTo = document.getElementById('canvasquadraticCurveTo')
+    const contextquadraticCurveTo = canvasquadraticCurveTo.getContext('2d')
+    contextquadraticCurveTo.beginPath()
+    contextquadraticCurveTo.moveTo(50, 50)
+    contextquadraticCurveTo.quadraticCurveTo(199, 17, 252, 98)
+    contextquadraticCurveTo.stroke()
+    // 显示控制点
+    const arrPoints = [{x: 50, y: 50}, { x: 199, y:17 }, {x: 252 , y: 98}]
+    const colors = ['gray', 'red', 'green'] // 灰色表示起始点，绿色表示结束点。红色为一个控制点！
+    arrPoints.forEach((point, index) => {
+      contextquadraticCurveTo.beginPath()
+      contextquadraticCurveTo.fillStyle = colors[index]
+      contextquadraticCurveTo.rect(point.x, point.y, 6, 6)
+      contextquadraticCurveTo.fill()
+    })
   })();
   </script>
 </body>

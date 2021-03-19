@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>getImageData()</title>
+</head>
+<body>
+  <div id="chapter22">chapter22</div>
+  <div>getImageData()</div>
+  <canvas id="canvas" width="250" height="167"></canvas>
+  <script>
+  (function(){
+    /** @type {HTMLCanvasElement} */
+
+    /*
+     getImageData 返回一个ImageData对象，其包含Canvas画布部分或完整的像素点信息。
+     当我们要对图像进行像素级处理的时候，getImageData() 方法不可或缺。
+     context.getImageData(sx, sy, sWidth, sHeight);
+     @sx：需要返回的图像数据区域的起始横坐标
+     @sy：需要返回的图像数据区域的起始纵坐标
+     @sWidth：需要返回的图像数据区域的宽度
+     @sHeight：需要返回的图像数据区域的高度
+     说明：
+     getImageData() 方法可能会出现CORS跨域报错，解决方法如下：
+     (1) 启动 Node 服务，即：图片服务器需要配置Access-Control-Allow-Origin。
+     (2) img.crossOrigin='anonymous';利用 HTML crossOrigin属性解决资源跨域问题。
+    
+    */
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = function () {
+      context.drawImage(this, 0, 0, 250, 167)
+      const imagedata = context.getImageData(75, 34, 100, 100)
+      for (let i = 0; i < imagedata.data.length; i+=4) {
+        var r = imagedata.data[i]
+        var g = imagedata.data[i + 1]
+        var b = imagedata.data[i + 2]
+
+        var gray = r * 0.299 + g * 0.587 + b * 0.114
+        imagedata.data[i] = gray
+        imagedata.data[i + 1] = gray
+        imagedata.data[i + 2] = gray
+      }
+      context.putImageData(imagedata, 75, 34)
+    }
+    img.src = './1.jpg' // 图片尺寸 500*333
+  })();
+  </script>
+</body>
+</html>

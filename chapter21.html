@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>fillText()</title>
+  <title>fillText() strokeText()</title>
 </head>
 
 <body>
   <div id="chapter21">chapter21</div>
   <div>fillText()</div>
-  <canvas id="canvas" width="300" height="600"></canvas>
+  <canvas id="canvasfillText"></canvas>
+  <div>strokeText()</div>
+  <canvas id="canvasstrokeText"></canvas>
   <script>
     (function () {
       /** @type {HTMLCanvasElement} */
@@ -24,7 +26,7 @@
           maxWidth = (canvas && canvas.width) || 300
         }
         if (typeof lineHeight === 'undefined') {
-          lineHeight = (canvas && parseInt(window.getComputedStyle(canvas).lineHeight)) || parseInt(window.getComputedStyle(document.body).lineHeight))
+          lineHeight = (canvas && parseInt(window.getComputedStyle(canvas).lineHeight)) || parseInt(window.getComputedStyle(document.body).lineHeight)
         }
         // 字符分隔为数组
         var arrText = text.split('')
@@ -51,15 +53,38 @@
         @y：填充文本的起点纵坐标
         @maxWidth（可选）：填充文本占据的最大宽度，当文本占据宽度超过最大宽度，会压缩每个文本宽度进行适合。
       */
-      const canvas = document.getElementById('canvas')
-      const context = canvas.getContext('2d')
+      const canvasfillText = document.getElementById('canvasfillText')
+      const contextfillText = canvasfillText.getContext('2d')
       // 1. 基本的文本绘制
-      context.font = '24px STheiti, SimHei'
-      context.fillText('Canvas API中文网', 24, 60)
+      contextfillText.font = '24px STheiti, SimHei'
+      contextfillText.fillText('Canvas API中文网', 24, 60)
       // 2. maxWidth与文本缩放
-      context.fillText('Canvas API中文网，不只是文档', 24, 90)
-      context.fillText('Canvas API中文网，不只是文档', 24, 120, 200)
+      contextfillText.fillText('Canvas API中文网，不只是文档', 24, 90)
+      contextfillText.fillText('Canvas API中文网，不只是文档', 24, 120, 200)
       // 3. 文本自动换行
+    })();
+
+    (function() {
+      /** @type {HTMLCanvasElement} */
+
+      /*
+        context.strokeText(text, x, y [, maxWidth]);
+        @text: 用来描边的文本信息
+        @x：描边文本的起点横坐标
+        @y：描边文本的起点纵坐标
+        @maxWidth（可选）：描边文本占据的最大宽度，当文本占据宽度超过最大宽度，会压缩每个文本宽度进行适合。
+      */
+      const canvasstrokeText = document.getElementById('canvasstrokeText')
+      const contextstrokeText = canvasstrokeText.getContext('2d')
+      // 1. 基本描边效果
+      contextstrokeText.font = '30px STHeiti, SimHei';
+      contextstrokeText.strokeText('文字描边', 50, 50);
+      // 2. 实色描边效果
+      contextstrokeText.font = '30px STHeiti, SimHei';
+      contextstrokeText.lineWidth = 3;
+      contextstrokeText.strokeStyle = 'red';
+      contextstrokeText.strokeText('文字描边', 50, 90); // 文字先描边
+      contextstrokeText.fillText('文字描边', 50, 90)
     })();
   </script>
 </body>

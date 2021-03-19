@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>isPointInPath() isPointInStroke()</title>
+</head>
+<body>
+  <div id="chapter24">chapter24</div>
+  <canvas id="canvasInPath" width="480" height="480"></canvas>
+  <canvas id="canvasInStroke" width="480" height="480"></canvas>
+  <script>
+    (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.isPointInPath(x, y)
+      context.isPointInPath(x, y, fillRule)
+      此方法返回Boolean值
+      @x：用来检测的点的横坐标
+      @y：用来检测的点的纵坐标
+      @fillRule：填充规则。用来确定一个点是在路径内还是路径外。
+    */
+      // 在画布上画两个圈圈，然后看看圈内圈外上的这几个点的返回值是什么？
+      const canvasInPath = document.getElementById('canvasInPath')
+      const contextInPath = canvasInPath.getContext('2d')
+      contextInPath.arc(120, 120, 80, 0, Math.PI * 2)
+      contextInPath.stroke()
+      const arrPoints = [{
+        x: 50,
+        y: 50
+      },{ 
+        x: 150,
+        y: 150
+      },{
+        x: 120, 
+        y: 40
+      }]
+      arrPoints.forEach(point => {
+        point.isPointInPath = contextInPath.isPointInPath(point.x, point.y);
+      })
+      arrPoints.forEach(point => {
+        contextInPath.beginPath()
+        contextInPath.fillStyle = 'red'
+        contextInPath.arc(point.x, point.y, 3, 0, Math.PI * 2)
+        contextInPath.fill()
+        contextInPath.fillText(point.isPointInPath, point.x, point.y + 14)
+      })
+    })();
+
+    (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.isPointInStroke(x, y)
+      context.isPointInStroke(path, x, y)
+      此方法返回Boolean值
+      @x：用来检测的点的横坐标
+      @y：用来检测的点的纵坐标
+      @path：指Path2D对象
+    */
+      // 在画布上画两个圈圈，然后看看圈内圈外上的这几个点的返回值是什么？
+      const canvasInStroke = document.getElementById('canvasInStroke')
+      const contextInStroke = canvasInStroke.getContext('2d')
+      contextInStroke.arc(120, 120, 80, 0, Math.PI * 2)
+      contextInStroke.lineWidth = 5; // 调整lineWidth进行判断5, 50
+      contextInStroke.stroke()
+      const arrPoints = [{
+        x: 50,
+        y: 50
+      },{ 
+        x: 150,
+        y: 150
+      },{
+        x: 120, 
+        y: 40
+      }]
+      arrPoints.forEach(point => {
+        point.isPointInStroke = contextInStroke.isPointInStroke(point.x, point.y);
+      })
+      arrPoints.forEach(point => {
+        contextInStroke.beginPath()
+        contextInStroke.fillStyle = 'red'
+        contextInStroke.arc(point.x, point.y, 3, 0, Math.PI * 2)
+        contextInStroke.fill()
+        contextInStroke.fillText(point.isPointInStroke, point.x, point.y + 14)
+      })
+    })();
+  </script>
+</body>
+</html>

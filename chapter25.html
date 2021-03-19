@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>measureText()</title>
+</head>
+<body>
+  <div id="chapter25">chapter25</div>
+  <canvas id="canvas" width="240" height="480"></canvas>
+  <script>
+  (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.measureText(text)
+      此方法返回TextMetrics对象，表示canvas元素中文本的尺寸。
+      @text：用来检测的文本
+    */
+    // 输出一个中文字符宽度以及一个英文单词的宽度，宽度直接在文字右上方标记。
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    context.font = '24px STHeiTi, SimHei'
+    // 添加文本对象
+    const textZh = context.measureText('帅')
+    const textEn = context.measureText('handsome')
+    context.fillText('帅', 60, 50)
+    context.fillText('handsome', 60, 90)
+    // 添加文本宽度显示
+    context.font = '12px Arial';
+    context.fillStyle = 'red';
+    const offset = 60 + 2 // 60为起始坐标的位置，2表示向右的偏移量
+    context.fillText('宽' + textZh.width, textZh.width + offset, 40)
+    context.fillText('handsome' + textEn.width, textEn.width + offset, 80)
+  })();
+  </script>
+</body>
+</html>

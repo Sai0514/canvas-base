@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>putImageData()</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div id="chapter23">chapter23</div>
+  <div>putImageData()</div>
+  <img id="image1" src="./1.jpg" alt="目标图片">
+  <img id="image2" src="./-1.jpg" alt="数据源图片">
+  <canvas id="canvas" width="300" height="200"></canvas>
+  <script>
+    window.onload = function () {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+     putImageData 将给定的ImageData对象的数据绘制到位图上。
+     如果提供脏矩形，则仅绘制该矩形的像素！！
+     此方法不受画布变换矩阵的影响！！
+     context.putImageData(imagedata, dx, dy);
+     context.putImageData(imagedata, dx, dy, dirtyX, dirtyY, dirtyWidth, dirtyHeight);
+     @imagedata：包含图像像素信息的imageData对象
+     @dx：目标Canvas中被图像数据替换的起点横坐标
+     @dy：目标Canvas中被图像数据替换的起点纵坐标
+     @dirtyX(可选)：图像数据渲染区域的左上角横坐标。默认值0
+     @dirtyY(可选)：图像数据渲染区域的左上角纵坐标。默认值0
+     @dirtyWidth(可选)：图像数据渲染区域的宽度。默认值imageData的宽度
+     @dirtyHeight(可选)：图像数据渲染区域的高度。默认值imageData的高度
+     说明：
+     参数说明，共分为3类，第3类属于可选参数。
+     第1类，imagedata，用来替换当前已有的canvas画布上的ImageData对象
+     第2类，dx、dy，作用在canvas画布上，也就是即将贴在画布的哪个位置上
+     第3类，dirtyX，dirtyY，dirtyWidth，dirtyHeight，表示脏矩形的坐标和尺寸。
+     默认情况下imagedata对象所有数据都会被替换，通过第3类参数设置只让部分数据替换。
+    */
+    const image1 = document.getElementById('image1')
+    const image2 = document.getElementById('image2')
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+
+    const width = canvas.width || 300
+    const height = canvas.height || 200
+    context.drawImage(image1, 0, 0, width, height)
+    // 获取覆盖图数据
+    const dirtyCanvas = document.createElement('canvas')
+    const dirtyContext = dirtyCanvas.getContext('2d')
+    dirtyCanvas.width = width
+    dirtyCanvas.height = height
+    dirtyContext.drawImage(image2, 0, 0, width, height)
+
+    const imagedata = dirtyContext.getImageData(0, 0, width, height)
+    context.putImageData(imagedata, 0, 0, 100, 50, 100, 100)
+    // 此处的dx、dy的坐标为何还是0, 0？可以这样理解：
+    // 其实坐标系并没有发生任何变化，仅脏矩形区域进行了替换。
+    // 也可以看成是脏矩形外面的像素被当做透明像素进行处理了。
+  }
+  </script>
+</body>
+</html>

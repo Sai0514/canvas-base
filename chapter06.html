@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>canvas lineDashOffset</title>
+  <title>lineDashOffset setLineDash() getLineDash()</title>
   <style>
   </style>
 </head>
@@ -12,7 +12,13 @@
   <canvas id="canvas" width="240" height="120"></canvas>
   <script>
   // 实现一个虚线边框不断旋转的效果
-  /** @type {HTMLCanvasElement} */   
+  /** @type {HTMLCanvasElement} */
+
+  /*
+    @setLineDash(segments) -- 用来设置虚线样式，segments为数组（数字列表）。[实线，虚线]
+    @lineDashOffset=value -- 用来指定虚线绘制的偏移距离，value表示虚线起始绘制的偏移距离，浮点型。
+    @getLineDash() -- 用来获取当前虚线的样式，返回的是一个数组（数字列表）。表示交替的实线和间隙的长度。
+  */
  
   const canvas = document.getElementById('canvas')
   const context = canvas.getContext('2d')
@@ -21,8 +27,9 @@
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.setLineDash([8, 4])
     context.lineDashOffset = offset
-    // fillStyle, strokeStyle 默认黑色
-    context.strokeRect(2, 2, 236, 116)
+    const dash = context.getLineDash()
+    console.log(offset, dash)
+    context.strokeRect(2, 2, 236, 116) // fillStyle, strokeStyle 默认黑色
   }
 
   const run = function () {
