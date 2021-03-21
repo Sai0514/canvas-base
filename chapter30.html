@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transform() setTransform()</title>
+</head>
+<body>
+  <div id="chapter30">chapter30</div>
+  <div>transform()</div>
+  <canvas id="canvas1" width="300" height="200"></canvas>
+  <div>setTransform()</div>
+  <canvas id="canvas2" width="300" height="200"></canvas>
+  <script>
+  (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.transform(a, b, c, d, e, f); 对当前坐标系进一步变换，以实现缩放、拉伸、旋转、平移等效果。
+      context.setTransform(a, b, c, d, e, f); 通过矩阵变换重置当期的坐标系。
+      transform()与setTransform()方法的区别在于，后者一旦执行则完全重置已有的变换。而前者是累加效果。
+      @a：水平缩放
+      @b：水平斜切
+      @c：垂直斜切
+      @d：垂直缩放
+      @e：水平位置
+      @f：垂直位置
+      补充：【矩阵】matrix()--2D变换矩阵为3*3  matrix3d()--3D变换矩阵为4*4
+      https://www.zhangxinxu.com/wordpress/2012/06/css3-transform-matrix-%e7%9f%a9%e9%98%b5/
+      */
+    // 案例1：transform()绘制平行四边形
+    const canvas1 = document.getElementById('canvas1')
+    const context1 = canvas1.getContext('2d')
+    context1.transform(1, 0, 1, 1, 0, 0)
+    context1.fillRect(10, 20, 100, 100)
+    // 案例2：setTransform()绘制平行四边形
+    const canvas2 = document.getElementById('canvas2')
+    const context2 = canvas2.getContext('2d')
+    context2.setTransform(1, 0, 1, 1, 0, 0)
+    context2.fillRect(10, 20, 100, 100)
+  })();
+  </script>
+</body>
+</html>

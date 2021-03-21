@@ -3,46 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>transform() translate()</title>
+  <title>scale()</title>
 </head>
 <body>
   <div id="chapter28">chapter28</div>
-  <canvas id="canvas"></canvas>
+  <canvas id="canvas1"></canvas>
+  <canvas id="canvas2"></canvas>
   <script>
   (function() {
     /** @type {HTMLCanvasElement} */
 
     /*
-      context.save(); 保存当前canvas画布状态，并保持在堆栈的最上面。
-      context.restore(); 依次从堆栈的上方弹出存储的canvas画布状态。
-      
+      context.scale(x, y); 用来缩放canvas画布的坐标系，只影响坐标系。
+      此缩放支持负数，也支持小数。缩放之后的绘制受此影响，之前的不受影响。
+      默认缩放中心点是canvas左上角坐标(0,0)，如果希望改变中心点，需要提前使用translate()进行平移。
+      @x：canvas坐标系水平缩放的比例，支持小数。如果是-1，则表示翻转。
+      @y：canvas坐标系垂直缩放的比例，支持小数。如果是-1，则表示翻转。
     */
-    // 案例：点击“保存”按钮，不断递增改变Canvas上下文的font属性值，执行save()方法存储当前Canvas状态；点击“恢复”按钮执行restore()进行恢复。
-    const canvas = document.getElementById('canvas')
-    const context = canvas.getContext('2d')
-    
-    // 初始状态
-    var fontSize = 16
-    context.font = fontSize + 'px arial'
-    context.fillText('字号大小：' + fontSize, 10, 80)
-
-    // 按钮事件
-    const save = document.getElementById('save')
-    save.addEventListener('click', function() {
-      context.clearRect(0, 0, 300, 150)
-      // 字号递增
-      fontSize++
-      context.font = fontSize + 'px arial'
-      context.fillText('字号大小：' + fontSize, 10, 80)
-    })
-    const restore = document.getElementById('restore')
-    restore.addEventListener('click', function() {
-      context.clearRect(0, 0, 300, 150)
-      // 字号递减
-      fontSize--
-      context.font = fontSize + 'px arial'
-      context.fillText('字号大小： ' + fontSize, 10, 80)
-    })
+    // 案例1：基本翻转
+    const canvas1 = document.getElementById('canvas1')
+    const context1 = canvas1.getContext('2d')
+    context1.fillRect(10, 10, 10, 10)
+    context1.scale(10, 3)
+    context1.fillRect(10, 10, 10, 10)
+    context1.setTransform(1, 0, 0, 1, 0, 0)
+    // 案例2：垂直翻转
+    const canvas2 = document.getElementById('canvas2')
+    const context2 = canvas2.getContext('2d')
+    context2.save()
+    context2.scale(1, -1)
+    context2.font = '30px STHeiti, SimHei'
+    context2.fillText('翻转角度看世界', 36, -60)
+    context2.restore()
+    context2.fillText('正常角度看世界', 36, 30)
   })();
   </script>
 </body>

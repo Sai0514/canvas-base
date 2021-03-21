@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>translate()</title>
+</head>
+<body>
+  <div id="chapter29">chapter29</div>
+  <canvas id="canvas" width="300" height="200"></canvas>
+  <script>
+  (function() {
+    /** @type {HTMLCanvasElement} */
+
+    /*
+      context.translate(x, y); 对canvas坐标系进行整体平移，实际开发中常用于改变其他变换的中心点。
+      @x：canvas坐标系水平位移的距离
+      @y：canvas坐标系垂直位移的距离
+    */
+    // 案例：实现Canvas元素内容以Canvas画布的中心点为变换点进行旋转。
+    const canvas = document.getElementById('canvas')
+    const context = canvas.getContext('2d')
+    const img = new Image()
+    img.onload = function () {
+      // 1. 直接绘制
+      // context.drawImage(this, 0, 0, 300, 200)
+      // 2. 平移后绘制
+      context.translate(150, 100)
+      context.rotate(45 * Math.PI / 180)
+      context.translate(-150, -100)
+      context.drawImage(this, 0, 0, 300, 200)
+      context.setTransform(1, 0, 0, 1, 0, 0)
+    } 
+    img.src = './1.jpg'
+    
+  })();
+  </script>
+</body>
+</html>
